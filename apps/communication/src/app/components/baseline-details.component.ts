@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -35,12 +35,15 @@ import { Baseline } from '../types/baseline';
   ],
 })
 export class BaselineDetailsComponent {
-  baseline: Baseline = {
+  @Input()
+  baseline!: Baseline;
+
+  /*  baseline: Baseline = {
     id: '987e62c2-13a1-49fc-a1c1-5939407a53cb',
     actualPartNumber: 'BL101',
     targetPartNumber: 'BL102',
     createdAt: new Date(2022, 2, 5, 10, 20, 35),
-  };
+  };*/
 
   onDelete() {
     // TODO

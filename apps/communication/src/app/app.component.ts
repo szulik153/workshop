@@ -4,6 +4,8 @@ import { SidebarComponent } from './components/sidebar.component';
 import { ToolbarComponent } from './components/toolbar.component';
 import { MappingsComponent } from './components/mappings.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { Baseline } from './types/baseline';
+import { BaselineSaveDto } from '@workshop/api-interfaces';
 
 @Component({
   standalone: true,
@@ -18,11 +20,11 @@ import { MatSidenavModule } from '@angular/material/sidenav';
         opened
         disableClose
       >
-        <wsp-sidebar></wsp-sidebar>
+        <wsp-sidebar [baselineMappings]="baselineMappings"></wsp-sidebar>
       </mat-drawer>
 
       <mat-drawer-content>
-        <wsp-mappings></wsp-mappings>
+        <wsp-mappings (addBaseline)="onNewBaselineAdded($event)"></wsp-mappings>
       </mat-drawer-content>
     </mat-drawer-container>
   `,
@@ -42,4 +44,18 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     MatSidenavModule,
   ],
 })
-export class AppComponent {}
+export class AppComponent {
+  baselineMappings: Baseline[] = [];
+
+  onNewBaselineAdded(newBaseline: BaselineSaveDto): void {
+    console.log(newBaseline);
+    // this.baselineMappings.push(newBaseline);
+    const baseline: Baseline = {
+      id: new Date().toISOString(),
+      actualPartNumber: newBaseline.actualPartNumber,
+      targetPartNumber: newBaseline.targetPartNumber,
+      createdAt: new Date(),
+    };
+    this.baselineMappings = [...this.baselineMappings, baseline];
+  }
+}

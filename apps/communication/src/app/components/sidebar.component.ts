@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaselineDetailsComponent } from './baseline-details.component';
 import { EcuDetailsComponent } from './ecu-details.component';
+import { Baseline } from '../types/baseline';
 
 @Component({
   selector: 'wsp-sidebar',
@@ -10,7 +11,10 @@ import { EcuDetailsComponent } from './ecu-details.component';
   template: `
     <p>List of mappings:</p>
     <div class="flex flex-col gap-2">
-      <wsp-baseline-details></wsp-baseline-details>
+      <wsp-baseline-details
+        *ngFor="let baseline of baselineMappings"
+        [baseline]="baseline"
+      ></wsp-baseline-details>
       <wsp-ecu-details></wsp-ecu-details>
     </div>
   `,
@@ -22,4 +26,7 @@ import { EcuDetailsComponent } from './ecu-details.component';
     `,
   ],
 })
-export class SidebarComponent {}
+export class SidebarComponent {
+  @Input()
+  baselineMappings: Baseline[] = [];
+}

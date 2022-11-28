@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CreateBaselineComponent } from './create-baseline.component';
 import { CreateEcuComponent } from './create-ecu.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { BaselineSaveDto } from '@workshop/api-interfaces';
 
 @Component({
   selector: 'wsp-mappings',
@@ -17,7 +18,9 @@ import { MatTabsModule } from '@angular/material/tabs';
     <mat-tab-group>
       <mat-tab label="Baseline">
         <ng-template matTabContent>
-          <wsp-create-baseline></wsp-create-baseline>
+          <wsp-create-baseline
+            (addBaseline)="onNewBaseline($event)"
+          ></wsp-create-baseline>
         </ng-template>
       </mat-tab>
       <mat-tab label="Ecu">
@@ -29,4 +32,11 @@ import { MatTabsModule } from '@angular/material/tabs';
   `,
   styles: [],
 })
-export class MappingsComponent {}
+export class MappingsComponent {
+  @Output()
+  addBaseline = new EventEmitter<BaselineSaveDto>();
+
+  onNewBaseline(newBaseline: BaselineSaveDto): void {
+    this.addBaseline.emit(newBaseline);
+  }
+}
