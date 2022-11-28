@@ -7,6 +7,8 @@ import {
   EcuSaveDto,
 } from '@workshop/api-interfaces';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { Baseline } from '../types/baseline';
 
 @Injectable({ providedIn: 'root' })
 export class MappingService {
@@ -24,8 +26,17 @@ export class MappingService {
 
   constructor(private http: HttpClient) {}
 
-  getAllBaselines(): Observable<BaselineDto[]> {
-    return this.http.get<BaselineDto[]>(this.endpoints.getBaselines);
+  getAllBaselines(): Observable<Baseline[]> {
+    return this.http.get<BaselineDto[]>(this.endpoints.getBaselines).pipe(
+      map((baselines) =>
+        baselines.map((baseline) => ({
+          id: baseline.id,
+          actualPartNumber: baseline.actualPartNumber,
+          targetPartNumber: baseline.targetPartNumber,
+          createdAt: new Date(baseline.createdAt),
+        }))
+      )
+    );
   }
 
   addBaseline(baseline: BaselineSaveDto): Observable<BaselineDto> {

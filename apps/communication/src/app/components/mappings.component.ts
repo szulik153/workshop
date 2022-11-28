@@ -5,6 +5,7 @@ import { CreateEcuComponent } from './create-ecu.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { BaselineSaveDto } from '@workshop/api-interfaces';
 import { CommunicationService } from '../services/communication.service';
+import { MappingService } from '../services/mapping.service';
 
 @Component({
   selector: 'wsp-mappings',
@@ -34,9 +35,15 @@ import { CommunicationService } from '../services/communication.service';
   styles: [],
 })
 export class MappingsComponent {
-  constructor(private communicationService: CommunicationService) {}
+  constructor(
+    private communicationService: CommunicationService,
+    private mappingService: MappingService
+  ) {}
 
   onNewBaseline(newBaseline: BaselineSaveDto): void {
-    this.communicationService.addNewBaseline(newBaseline);
+    this.mappingService
+      .addBaseline(newBaseline)
+      .subscribe(() => this.communicationService.baselinesChanged());
+    // this.communicationService.addNewBaseline(newBaseline);
   }
 }
