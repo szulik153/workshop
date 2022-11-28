@@ -1,8 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaselineDetailsComponent } from './baseline-details.component';
 import { EcuDetailsComponent } from './ecu-details.component';
-import { Baseline } from '../types/baseline';
+import { CommunicationService } from '../services/communication.service';
 
 @Component({
   selector: 'wsp-sidebar',
@@ -12,8 +12,9 @@ import { Baseline } from '../types/baseline';
     <p>List of mappings:</p>
     <div class="flex flex-col gap-2">
       <wsp-baseline-details
-        *ngFor="let baseline of baselineMappings"
+        *ngFor="let baseline of baselines$ | async"
         [baseline]="baseline"
+        (delete)="onDeleteBaseline($event)"
       ></wsp-baseline-details>
       <wsp-ecu-details></wsp-ecu-details>
     </div>
@@ -27,6 +28,11 @@ import { Baseline } from '../types/baseline';
   ],
 })
 export class SidebarComponent {
-  @Input()
-  baselineMappings: Baseline[] = [];
+  baselines$ = this.communicationService.baselines$;
+
+  constructor(private communicationService: CommunicationService) {}
+
+  onDeleteBaseline(id: string): void {
+    this.communicationService.deleteBaseline(id);
+  }
 }

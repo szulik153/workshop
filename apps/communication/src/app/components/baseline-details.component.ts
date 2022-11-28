@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -38,6 +38,9 @@ export class BaselineDetailsComponent {
   @Input()
   baseline!: Baseline;
 
+  @Output()
+  delete = new EventEmitter<string>();
+
   /*  baseline: Baseline = {
     id: '987e62c2-13a1-49fc-a1c1-5939407a53cb',
     actualPartNumber: 'BL101',
@@ -46,6 +49,7 @@ export class BaselineDetailsComponent {
   };*/
 
   onDelete() {
+    this.delete.emit(this.baseline.id);
     // TODO
   }
 }

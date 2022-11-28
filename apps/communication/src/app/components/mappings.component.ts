@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CreateBaselineComponent } from './create-baseline.component';
 import { CreateEcuComponent } from './create-ecu.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { BaselineSaveDto } from '@workshop/api-interfaces';
+import { CommunicationService } from '../services/communication.service';
 
 @Component({
   selector: 'wsp-mappings',
@@ -33,10 +34,9 @@ import { BaselineSaveDto } from '@workshop/api-interfaces';
   styles: [],
 })
 export class MappingsComponent {
-  @Output()
-  addBaseline = new EventEmitter<BaselineSaveDto>();
+  constructor(private communicationService: CommunicationService) {}
 
   onNewBaseline(newBaseline: BaselineSaveDto): void {
-    this.addBaseline.emit(newBaseline);
+    this.communicationService.addNewBaseline(newBaseline);
   }
 }
