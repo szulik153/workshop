@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { SidebarComponent } from './components/sidebar.component';
 import { ToolbarComponent } from './components/toolbar.component';
 import { MappingsComponent } from './components/mappings.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { Store } from '@ngrx/store';
+import { AppActions } from './+state/app.actions';
 
 @Component({
   standalone: true,
@@ -42,4 +44,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     MatSidenavModule,
   ],
 })
-export class AppComponent {}
+export class AppComponent implements OnInit {
+  constructor(private readonly store: Store) {}
+
+  ngOnInit(): void {
+    this.store.dispatch(AppActions.appOpened());
+  }
+}

@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { CreateBaselineComponent } from './create-baseline.component';
 import { CreateEcuComponent } from './create-ecu.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { BaselineSaveDto } from '@workshop/api-interfaces';
+import { Store } from '@ngrx/store';
+import { MappingTabActions } from '../+state/baseline.actions';
 
 @Component({
   selector: 'wsp-mappings',
@@ -17,7 +20,9 @@ import { MatTabsModule } from '@angular/material/tabs';
     <mat-tab-group>
       <mat-tab label="Baseline">
         <ng-template matTabContent>
-          <wsp-create-baseline></wsp-create-baseline>
+          <wsp-create-baseline
+            (addMapping)="onBaselineMappingAdded($event)"
+          ></wsp-create-baseline>
         </ng-template>
       </mat-tab>
       <mat-tab label="Ecu">
@@ -29,4 +34,12 @@ import { MatTabsModule } from '@angular/material/tabs';
   `,
   styles: [],
 })
-export class MappingsComponent {}
+export class MappingsComponent {
+  constructor(private readonly store: Store) {}
+
+  onBaselineMappingAdded(mapping: BaselineSaveDto) {
+    this.store.dispatch(
+      MappingTabActions.addBaseline({ baselineToSave: mapping })
+    );
+  }
+}

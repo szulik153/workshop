@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { Baseline } from '../types/baseline';
+import { BaselineDto } from '@workshop/api-interfaces';
 
 @Component({
   selector: 'wsp-baseline-details',
@@ -35,14 +35,13 @@ import { Baseline } from '../types/baseline';
   ],
 })
 export class BaselineDetailsComponent {
-  baseline: Baseline = {
-    id: '987e62c2-13a1-49fc-a1c1-5939407a53cb',
-    actualPartNumber: 'BL101',
-    targetPartNumber: 'BL102',
-    createdAt: new Date(2022, 2, 5, 10, 20, 35),
-  };
+  @Input()
+  baseline!: BaselineDto;
+
+  @Output()
+  readonly deleteBaseline = new EventEmitter<string>();
 
   onDelete() {
-    // TODO
+    this.deleteBaseline.emit(this.baseline.id);
   }
 }

@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaselineDetailsComponent } from './baseline-details.component';
 import { EcuDetailsComponent } from './ecu-details.component';
+import { Store } from '@ngrx/store';
+import { selectAllBaselines } from '../+state/baseline.selectors';
+import { SidebarActions } from '../+state/sidebar.actions';
 
 @Component({
   selector: 'wsp-sidebar',
@@ -10,7 +13,11 @@ import { EcuDetailsComponent } from './ecu-details.component';
   template: `
     <p>List of mappings:</p>
     <div class="flex flex-col gap-2">
-      <wsp-baseline-details></wsp-baseline-details>
+      <wsp-baseline-details
+        *ngFor="let baseline of baselineMapping$ | async"
+        [baseline]="baseline"
+        (deleteBaseline)="onDeleteBaseline($event)"
+      ></wsp-baseline-details>
       <wsp-ecu-details></wsp-ecu-details>
     </div>
   `,
@@ -22,4 +29,12 @@ import { EcuDetailsComponent } from './ecu-details.component';
     `,
   ],
 })
-export class SidebarComponent {}
+export class SidebarComponent {
+  baselineMapping$ = this.store.select(selectAllBaselines);
+
+  constructor(private readonly store: Store) {}
+
+  onDeleteBaseline(id: string) {
+    this.store.dispatch(SidebarActions.deleteBaseline({ id }));
+  }
+}

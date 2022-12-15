@@ -29,6 +29,7 @@
     "@nrwl/angular": "15.0.13",
     "@ngrx/store": "14.3.2",
     "@ngrx/effects": "14.3.2",
+    "@ngrx/entity": "14.3.2",
     "@ngrx/store-devtools": "14.3.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",

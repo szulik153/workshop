@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaselineSaveDto } from '@workshop/api-interfaces';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -60,12 +60,16 @@ import { MatButtonModule } from '@angular/material/button';
   styles: [],
 })
 export class CreateBaselineComponent {
+  @Output()
+  readonly addMapping = new EventEmitter<BaselineSaveDto>();
+
   baselineToSave: BaselineSaveDto = {
     actualPartNumber: '',
     targetPartNumber: '',
   };
 
   onSubmit() {
-    // TODO
+    console.log(this.baselineToSave);
+    this.addMapping.emit({ ...this.baselineToSave });
   }
 }

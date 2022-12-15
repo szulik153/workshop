@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { Store } from '@ngrx/store';
+import { selectBaselinesCount } from '../+state/baseline.selectors';
 
 @Component({
   selector: 'wsp-toolbar',
@@ -12,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
     <mat-toolbar color="primary">
       <span>Communication</span>
       <span class="ml-auto text-sm">
-        Available mappings: {{ numberOfMappings }}
+        Available mappings: {{ totalCount$ | async }}
       </span>
       <button mat-icon-button class="!ml-2" (click)="toggleMenu.emit()">
         <mat-icon>menu</mat-icon>
@@ -25,5 +27,7 @@ export class ToolbarComponent {
   @Output()
   readonly toggleMenu = new EventEmitter<void>();
 
-  numberOfMappings = 2;
+  totalCount$ = this.store.select(selectBaselinesCount);
+
+  constructor(private readonly store: Store) {}
 }
